@@ -18,6 +18,9 @@ _start:
 
     # Compute an encryption key schedule.
     #
+    # Use the key_expand macro from common.s, which keeps
+    # state between invocations in %xmm0 and %xmm2.
+    #
     # Store all the round keys in registers because we can.
     key_expand $1,   %xmm6
     key_expand $2,   %xmm7
@@ -57,3 +60,5 @@ encrypt:
 done:
     # Call _exit(0).
     linux_syscall $NR_exit, $0
+
+# vim: ft=asm

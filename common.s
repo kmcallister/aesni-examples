@@ -1,3 +1,5 @@
+# Macros and functions used by both encrypt and decrypt.
+
 # Make a Linux syscall.
 .macro linux_syscall NR ARG1 ARG2 ARG3
     mov \NR,   %rax
@@ -99,3 +101,5 @@ write_block:
     # A 16-byte, 16-byte-aligned buffer, used to transfer
     # data between stdin/stdout and XMM registers.
     .comm buf, 16, 16
+
+# vim: ft=asm

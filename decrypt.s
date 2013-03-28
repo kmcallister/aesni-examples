@@ -19,6 +19,9 @@ _start:
     # Compute a decryption key schedule for the Equivalent
     # Inverse Cipher.
     #
+    # Use the key_expand macro from common.s, which keeps
+    # state between invocations in %xmm0 and %xmm2.
+    #
     # Store all the round keys in registers because we can.
     key_expand $1,   %xmm6,  1
     key_expand $2,   %xmm7,  1
@@ -58,3 +61,5 @@ decrypt:
 done:
     # Call _exit(0).
     linux_syscall $NR_exit, $0
+
+# vim: ft=asm
