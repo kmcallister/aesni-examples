@@ -32,11 +32,13 @@ absolutely no responsibility for what happens if you do (see `LICENSE`).
 `encrypt` will read a 16-byte AES-128 key from standard input, followed by zero
 or more 16-byte plaintext blocks, and will write the corresponding ciphertext
 to standard output.  `decrypt` works the same way, with the roles of plaintext
-and ciphertext reversed.
+and ciphertext reversed.  Run `build-and-test.sh` to build both programs and
+then test them against a few hundred AES-128 test vectors.
 
 Both programs are written in assembly for amd64 Linux, and will run without
-needing `libc` or any other libraries.  Run `build-and-test.sh` to build both
-programs and then test them against a few hundred AES-128 test vectors.
+needing `libc` or any other libraries.  If you want to port these programs to
+another amd64 platform (with a GNU-compatible assembler), all of the
+OS-specific code is at the top of `common.s`.
 
 To see if your CPU supports AES-NI, check for `aes` in `/proc/cpuinfo`.
 

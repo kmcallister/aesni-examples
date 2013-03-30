@@ -1,5 +1,12 @@
 # Macros and functions used by both encrypt and decrypt.
 
+.data
+    # A 16-byte, 16-byte-aligned buffer, used to transfer
+    # data between stdin/stdout and XMM registers.
+    .comm buf, 16, 16
+
+.text
+
 # Make a Linux syscall.
 .macro linux_syscall NR ARG1 ARG2 ARG3
     mov \NR,   %rax
@@ -17,6 +24,23 @@
 .equ NR_read,   0
 .equ NR_write,  1
 .equ NR_exit,  60
+
+# Read 16 bytes from stdin to %xmm0.
+read_block:
+    linux_syscall $NR_read,  $0, $buf, $16
+    movaps buf, %xmm0
+    ret
+
+# Write 16 bytes from %xmm0 to stdout.
+write_block:
+    movaps %xmm0, buf
+    linux_syscall $NR_write, $1, $buf, $16
+    ret
+
+exit:
+    # Call _exit(0).
+    linux_syscall $NR_exit, $0
+
 
 # Compute one AES round key.
 #
@@ -41,8 +65,6 @@
     movaps %xmm0, \DEST
 .endif
 .endm
-
-.text
 
 # XOR together previous round key bytes and the output of
 # AESKEYGENASSIST to get a new round key.
@@ -84,22 +106,5 @@ key_combine:
     #                 ^V     ^P0^V  ^P1^P0^V
 
     ret
-
-# Read 16 bytes from stdin to %xmm0.
-read_block:
-    linux_syscall $NR_read,  $0, $buf, $16
-    movaps buf, %xmm0
-    ret
-
-# Write 16 bytes from %xmm0 to stdout.
-write_block:
-    movaps %xmm0, buf
-    linux_syscall $NR_write, $1, $buf, $16
-    ret
-
-.data
-    # A 16-byte, 16-byte-aligned buffer, used to transfer
-    # data between stdin/stdout and XMM registers.
-    .comm buf, 16, 16
 
 # vim: ft=asm

@@ -36,10 +36,10 @@ _start:
 
 decrypt:
     # Try to read a block of ciphertext.
-    # Jump to 'done' on EOF.
+    # Exit on EOF.
     call read_block
     cmp  $16, %rax
-    jl   done
+    jl   exit
 
     # Decrypt the block.
     pxor       %xmm15, %xmm0
@@ -57,9 +57,5 @@ decrypt:
     # Write it to stdout and loop.
     call write_block
     jmp  decrypt
-
-done:
-    # Call _exit(0).
-    linux_syscall $NR_exit, $0
 
 # vim: ft=asm

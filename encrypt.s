@@ -35,10 +35,10 @@ _start:
 
 encrypt:
     # Try to read a block of plaintext.
-    # Jump to 'done' on EOF.
+    # Exit on EOF.
     call read_block
     cmp  $16, %rax
-    jl   done
+    jl   exit
 
     # Encrypt the block.
     pxor       %xmm5,  %xmm0
@@ -56,9 +56,5 @@ encrypt:
     # Write it to stdout and loop.
     call write_block
     jmp  encrypt
-
-done:
-    # Call _exit(0).
-    linux_syscall $NR_exit, $0
 
 # vim: ft=asm
