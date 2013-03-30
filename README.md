@@ -10,6 +10,8 @@ together these programs as a test of my understanding, and a demonstration
 which may be useful to others.  The programs are very simple, there is little
 going on besides AES-NI, and they are thoroughly commented.
 
+This code is available under a BSD-style license; see `LICENSE`.
+
 
 ## Warning
 
