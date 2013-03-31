@@ -73,6 +73,10 @@ block is the same size as an SSE register.  The user-specified key goes in
 `%xmm15`.  `%xmm0` through `%xmm2` are used for various scratch purposes;
 `%xmm3` and `%xmm4` are unused.
 
+The key expansion code in `encrypt.s` and `decrypt.s` is similar and could be
+combined using an additional macro, but I chose to leave them separate for
+clarity.
+
 AES-NI itself is very fast.  However, don't expect great performance from these
 programs, because they make two system calls per 16 bytes processed.  A
 high-throughput version would buffer I/O to reduce system call overhead.

@@ -16,13 +16,17 @@ _start:
     # Clear %xmm2, which is a precondition for key_expand.
     pxor   %xmm2, %xmm2
 
-    # Compute a decryption key schedule for the Equivalent
-    # Inverse Cipher.
+    # Compute a decryption key schedule for the Equivalent Inverse
+    # Cipher.
     #
-    # Use the key_expand macro from common.s, which keeps
-    # state between invocations in %xmm0 and %xmm2.
+    # Use the key_expand macro from common.s, which keeps state
+    # between invocations in %xmm0 and %xmm2.  Store round keys in
+    # %xmm6 through %xmm15.
     #
-    # Store all the round keys in registers because we can.
+    # The immediate "round constants" are basically magic numbers
+    # as far as we're concerned, but have some mathematical basis:
+    # http://en.wikipedia.org/wiki/Rijndael_key_schedule#Rcon
+
     key_expand $1,   %xmm6,  1
     key_expand $2,   %xmm7,  1
     key_expand $4,   %xmm8,  1
