@@ -2,7 +2,7 @@
 
 printf 'Building... '
 for bin in encrypt decrypt; do
-    gcc -Wall -nostdlib -o $bin $bin.s
+    gcc -Wall -nostdlib -no-pie -o $bin $bin.s
 done
 printf 'done.\n'
 
